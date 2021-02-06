@@ -1,23 +1,26 @@
 import csv
+from abc import ABC
+
 from abstract_file_exstractor import AbstractFileEtractor
 
 
-class CsvFileExtractor(AbstractFileEtractor):
+class CsvFileExtractor(AbstractFileEtractor, ABC):
+    csv_column_structure = list()
     
     def __init__(self, file_name):
-        with open(file_name, 'r') as file:
-            self.csv_reader = csv.reader(file, delimiter=':')
-        self.readed_lines = 0
+        file = open(file_name, 'r')
+        self.csv_reader = csv.reader(file, delimiter=',')
+        self.read_lines = 0
     
     def get_value(self):
         try:
             value = next(self.csv_reader)
         except StopIteration:
             return
-        self.readed_lines += 1
-        return value
+        self.read_lines += 1
+        return dict(zip(self.csv_column_structure, value))
         
     def get_columns(self):
-        if self.readed_lines == 0:
-            return next(self.csv_reader)
-            
+        if self.read_lines == 0:
+            self.csv_column_structure = next(self.csv_reader)
+            return self.csv_column_structure

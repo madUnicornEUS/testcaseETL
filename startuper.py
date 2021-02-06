@@ -6,15 +6,15 @@ class StartUper:
     files = list()
     processor = None
     
-    def _init_(self, file_names):
+    def __init__(self, file_names):
         assert isinstance(file_names, list)
-        files = file_names[:]
+        self.files = file_names[:]
     
-    def start_up(self):
+    def run(self):
         for file in self.files:
-            self.extractors.append(Builder().build_extractor(file))
-            
-        self.processor = Builder().build_processor()
-        
+            crafted_extractor = Builder().build_extractor(file)
+            if crafted_extractor is not None:
+                self.extractors.append(crafted_extractor)
+        print(self.extractors)
+        self.processor = Builder().build_processor(self.extractors)
         self.processor.process_files()
-        
