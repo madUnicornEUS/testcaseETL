@@ -11,7 +11,7 @@ class Builder:
         if match(r'.*\.csv', file_name):
             return self.build_csv_extractor(file_name)
         elif match(r'.*\.json', file_name):
-            self.build_json_extractor(file_name).get_columns()
+            return self.build_json_extractor(file_name)
         elif match(r'.*\.xml', file_name):
             return self.build_xml_extractor(file_name)
         else:

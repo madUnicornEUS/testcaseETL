@@ -18,3 +18,4 @@ class StartUper:
         print(self.extractors)
         self.processor = Builder().build_processor(self.extractors)
         self.processor.process_files()
+        self.processor.craft_common_file()
