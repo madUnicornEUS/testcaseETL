@@ -16,8 +16,8 @@ class TsvFileCrafter(AbstractFileCrafter, ABC):
 
         self.file_type = file_type
         if len(name) == 0:
-            self.file_name = 'base.tsv'
-            self.agr_file_name = 'advanced.tsv'
+            self.file_name = 'basic_results.tsv'
+            self.agr_file_name = 'advanced_results.tsv'
         else:
             self.file_name = name
             self.agr_file_name = name + 'S'

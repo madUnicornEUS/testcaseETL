@@ -15,7 +15,6 @@ class StartUper:
             crafted_extractor = Builder().build_extractor(file)
             if crafted_extractor is not None:
                 self.extractors.append(crafted_extractor)
-        print(self.extractors)
         self.processor = Builder().build_processor(self.extractors)
         self.processor.process_files()
         self.processor.state_sort()
