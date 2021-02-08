@@ -54,7 +54,8 @@ class TsvFileCrafter(AbstractFileCrafter, ABC):
     def write_file(self):
         self.file_writer.writerow(list(self.inner_state.keys()))
         self.agr_file_writer.writerow(list(self.inner_state.keys())[:self.zip_depth] +
-                                      ['MS' + str(i) for i in range(len(list(self.inner_state.keys())[self.zip_depth:]))])
+                                      ['MS' + str(i)
+                                       for i in range(len(list(self.inner_state.keys())[self.zip_depth:]))])
         self.file_writer.writerows(self.transpose_inner_state())
         self.agr_file_writer.writerows([list(v[0]) + list(v[1]) for v in self.summable_values.items()])
         self.file_to_write.close()
@@ -73,15 +74,15 @@ class TsvFileCrafter(AbstractFileCrafter, ABC):
 
     def group_and_sum(self, new_values):
         assert isinstance(new_values, list)
-        ziped_state = [list(i) for i in list(zip(*list(self.inner_state.values())))]
         tmp_dict = dict()
 
         if tuple(new_values[:self.zip_depth]) not in self.summable_values.keys():
             self.summable_values[tuple(new_values[:self.zip_depth])] = new_values[self.zip_depth:]
         else:
             self.summable_values[tuple(new_values[:self.zip_depth])] = [str(int(i[0]) + int(i[1])) for i in
-                                                 zip(self.summable_values[tuple(new_values[:self.zip_depth])],
-                                                     new_values[self.zip_depth:])]
+                                                                        zip(self.summable_values[
+                                                                                tuple(new_values[:self.zip_depth])],
+                                                                            new_values[self.zip_depth:])]
 
         tmp_key = sorted(self.summable_values.keys(), key=lambda v: v)
         for key in tmp_key:
@@ -91,7 +92,7 @@ class TsvFileCrafter(AbstractFileCrafter, ABC):
 
     def show_inner_state(self):
         for column, value in self.inner_state.items():
-            print("{}---{}----{}".format(column, value, len(value)))
+            print('{}---{}----{}'.format(column, value, len(value)))
 
     def transpose_inner_state(self):
         return list(zip(*list(self.inner_state.values())))
