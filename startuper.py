@@ -18,5 +18,4 @@ class StartUper:
         self.processor = Builder().build_processor(self.extractors)
         self.processor.process_files()
         self.processor.state_sort()
-        self.processor.file_crafter.show_inner_state()
         self.processor.craft_common_file()

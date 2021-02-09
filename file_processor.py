@@ -7,7 +7,7 @@ class FileProcessor:
     def __init__(self, extractors):
         assert isinstance(extractors, list)
         self.processing_files = extractors[:]
-        self.file_crafter = TsvFileCrafter('tsv')
+        self.file_crafter = TsvFileCrafter()
     
     def process_files(self):
         self.extract_file_structure()

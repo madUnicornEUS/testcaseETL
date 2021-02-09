@@ -10,11 +10,9 @@ class TsvFileCrafter(AbstractFileCrafter, ABC):
     inner_state = dict()
     zip_depth = 0
 
-    def __init__(self, file_type, name=''):
-        assert isinstance(file_type, str)
+    def __init__(self, name=''):
         assert isinstance(name, str)
 
-        self.file_type = file_type
         if len(name) == 0:
             self.file_name = 'basic_results.tsv'
             self.agr_file_name = 'advanced_results.tsv'

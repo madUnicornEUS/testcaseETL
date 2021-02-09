@@ -42,5 +42,3 @@ class XmlFileExtractor(AbstractFileEtractor, ABC):
                 print("{}---------{}".format(node.tag, list(node.attrib.values())))
             except StopIteration:
                 break
-
-

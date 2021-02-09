@@ -16,15 +16,19 @@ class Builder:
             return self.build_xml_extractor(file_name)
         else:
             print('such type of files are not processing')
-    
-    def build_processor(self, extractor):
+
+    @staticmethod
+    def build_processor(extractor):
         return FileProcessor(extractor)
 
-    def build_csv_extractor(self, file_name):
+    @staticmethod
+    def build_csv_extractor(file_name):
         return CsvFileExtractor(file_name)
 
-    def build_json_extractor(self, file_name):
+    @staticmethod
+    def build_json_extractor(file_name):
         return JsonFileExtractor(file_name)
 
-    def build_xml_extractor(self, file_name):
+    @staticmethod
+    def build_xml_extractor(file_name):
         return XmlFileExtractor(file_name)
