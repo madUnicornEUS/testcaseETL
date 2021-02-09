@@ -1,9 +1,9 @@
-D1	D2	D3	MS0	MS1	MS2	MS3	MS4	MS5	MS6	MS7	MS8	MS9
+D1	D2	D3	MS1	MS2	MS3	MS4	MS5	MS6	MS7	MS8	MS9	MS10
 a	a	a	0	0	0
 a	b	c	1	1	1	1
-b	a	c	1	1	2321	0
+b	a	c	1	0	1	1
 b	b	b	1	1	1	1
-b	c	b	901	9	21	0	2	0	1	2231	1	0
-c	a	a	123	2	214455	1	2	0	0	233	1	5
+b	c	b	1	0	2	1	901	0	21	2231	0	9
+c	a	a	1	1	2	0	123	5	214455	233	0	2
 c	b	a	2	2	2	2
 c	c	c	2	2	2	2

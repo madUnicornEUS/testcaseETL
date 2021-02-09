@@ -22,7 +22,6 @@ class JsonFileExtractor(AbstractFileEtractor, ABC):
             self.read_line += 1
             self.file_read.close()
             self.file_read = open(self.file_name, 'r')
-            print(value)
             return value
         except IndexError:
             return

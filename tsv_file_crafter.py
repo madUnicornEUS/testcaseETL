@@ -1,4 +1,4 @@
-from re import match
+from re import match, findall
 from abc import ABC
 
 from abstract_file_crafter import AbstractFileCrafter
@@ -54,7 +54,7 @@ class TsvFileCrafter(AbstractFileCrafter, ABC):
     def write_file(self):
         self.file_writer.writerow(list(self.inner_state.keys()))
         self.agr_file_writer.writerow(list(self.inner_state.keys())[:self.zip_depth] +
-                                      ['MS' + str(i)
+                                      ['MS' + str(i + 1)
                                        for i in range(len(list(self.inner_state.keys())[self.zip_depth:]))])
         self.file_writer.writerows(self.transpose_inner_state())
         self.agr_file_writer.writerows([list(v[0]) + list(v[1]) for v in self.summable_values.items()])
@@ -70,21 +70,34 @@ class TsvFileCrafter(AbstractFileCrafter, ABC):
         for key in self.inner_state.keys():
             if key not in new_values.keys():
                 self.inner_state[key] += ['']
-        self.group_and_sum(list(new_values.values()))
+        self.group_and_sum(new_values)
 
     def group_and_sum(self, new_values):
-        assert isinstance(new_values, list)
+        assert isinstance(new_values, dict)
         tmp_dict = dict()
 
-        if tuple(new_values[:self.zip_depth]) not in self.summable_values.keys():
-            self.summable_values[tuple(new_values[:self.zip_depth])] = new_values[self.zip_depth:]
+        extract_new_values = ['' for i in range(len(list(new_values.keys())))]
+
+        for key, value in new_values.items():
+            p = [int(i) for i in findall(r'\d*', key) if len(i) != 0][0]
+            get_index = int(p)
+            if match(r'D\d*', key):
+                extract_new_values[get_index - 1] = value
+            elif match(r'M\d*', key):
+                extract_new_values[get_index + self.zip_depth - 1] = value
+
+        if tuple(extract_new_values[:self.zip_depth]) not in self.summable_values.keys():
+            self.summable_values[tuple(extract_new_values[:self.zip_depth])] = extract_new_values[self.zip_depth:]
         else:
-            self.summable_values[tuple(new_values[:self.zip_depth])] = [str(int(i[0]) + int(i[1])) for i in
-                                                                        zip(self.summable_values[
-                                                                                tuple(new_values[:self.zip_depth])],
-                                                                            new_values[self.zip_depth:])]
+            self.summable_values[tuple(extract_new_values[:self.zip_depth])] = [str(int(i[0]) + int(i[1])) for i in
+                                                                                zip(self.summable_values[
+                                                                                        tuple(extract_new_values[
+                                                                                              :self.zip_depth])],
+                                                                                    extract_new_values[
+                                                                                    self.zip_depth:])]
 
         tmp_key = sorted(self.summable_values.keys(), key=lambda v: v)
+
         for key in tmp_key:
             tmp_dict[key] = self.summable_values[key]
         self.summable_values.clear()
@@ -105,6 +118,3 @@ class TsvFileCrafter(AbstractFileCrafter, ABC):
             if elem == match_elem:
                 match_indexes.append(index)
         return match_indexes
-
-    def check_for_match(self):
-        pass
